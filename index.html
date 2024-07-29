@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Recommendation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Recommendation System</h1>
+        <div class="form-group">
+            <label for="student_id">Student ID:</label>
+            <input type="number" id="student_id">
+        </div>
+        <div class="form-group">
+            <label for="student_name">Student Name:</label>
+            <input type="text" id="student_name">
+        </div>
+        <button class="button" onclick="getRecommendation()">Get Recommendation</button>
+        <button class="button" onclick="getAllRecommendations()">Get All Recommendations</button>
+        <button class="button" onclick="getPreviousRecommendations()">Previous Recommendations</button>
+        <button class="button" onclick="getMostSearchedRecommendations()">Most Searched Recommendations</button>
+        <button class="button" onclick="getRandomRecommendations()">Random Recommendations</button>
+        <div id="output" class="output"></div>
+    </div>
+    <script>
+        async function fetchFromAPI(endpoint, method = 'GET', data = {}) {
+            const response = await fetch(`http://localhost:8000/${endpoint}`, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: method === 'POST' ? JSON.stringify(data) : null
+            });
+            return response.json();
+        }
+
+        async function getRecommendation() {
+            const studentId = document.getElementById('student_id').value;
+            const studentName = document.getElementById('student_name').value;
+
+            const data = {
+                student_id: studentId,
+                student_name: studentName
+            };
+
+            const result = await fetchFromAPI('recommendation', 'POST', data);
+            displayResult(result);
+        }
+
+        async function getAllRecommendations() {
+            const result = await fetchFromAPI('all_recommendations');
+            displayResult(result);
+        }
+
+        async function getPreviousRecommendations() {
+            const result = await fetchFromAPI('previous_recommendations');
+            displayResult(result);
+        }
+
+        async function getMostSearchedRecommendations() {
+            const result = await fetchFromAPI('most_searched_recommendations');
+            displayResult(result);
+        }
+
+        async function getRandomRecommendations() {
+            const result = await fetchFromAPI('random_recommendations');
+            displayResult(result);
+        }
+
+        function displayResult(result) {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+        }
+    </script>
+</body>
+</html>
