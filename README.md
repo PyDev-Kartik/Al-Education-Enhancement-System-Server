@@ -1,8 +1,5 @@
-# Al-Education-Enhancement-System-Server
-Empowering personalized learning with intelligent recommendations to transform the educational landscape and unlock each student's full potential.
-
 # Student Performance Analysis and Recommendation System
-
+Empowering personalized learning with intelligent recommendations to transform the educational landscape and unlock each student's full potential.
 ## Overview
 
 This project includes a set of tools for analyzing student performance data and providing recommendations based on various machine learning models. It consists of:
